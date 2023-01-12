@@ -26,5 +26,16 @@ def predict_api():
 
     return jsonify(output[0])
 
+
+@app.route('/predict',methods=['POST'])
+def predict():
+    data= [float(x) for x in request.form.values()]
+    final_input= scaler.transform(np.array(data).reshape(1,-1))
+    final_output= regmodel.predict(final_input)[0]
+    return render_template("predictpage.html",response=final_output)
+
+
+
+
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(debug=True,port=2000)
